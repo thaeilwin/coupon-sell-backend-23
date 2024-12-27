@@ -13,7 +13,6 @@ public class CouponResponse {
         private String createdDate;
         private String description;
 
-
     public String getCreatedDate() {
         return createdDate;
     }
