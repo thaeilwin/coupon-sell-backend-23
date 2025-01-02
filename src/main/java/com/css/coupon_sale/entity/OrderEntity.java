@@ -50,6 +50,9 @@ public class OrderEntity {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
+  @Column(name = "order_id")
+  private int orderId;
+
 
 
   public int getId() {
@@ -146,5 +149,13 @@ public class OrderEntity {
 
   public void setTotalPrice(int totalPrice) {
     this.totalPrice = totalPrice;
+  }
+
+  public int getOrderId() {
+    return orderId;
+  }
+
+  public void setOrderId(int orderId) {
+    this.orderId = orderId;
   }
 }

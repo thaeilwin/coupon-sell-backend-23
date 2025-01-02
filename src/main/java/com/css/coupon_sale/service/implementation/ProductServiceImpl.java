@@ -228,6 +228,42 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    public void importProductsFromExcel(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new RuntimeException("The uploaded file is empty.");
+        }
+
+        try (InputStream inputStream = file.getInputStream()) {
+            Workbook workbook = new XSSFWorkbook(inputStream);
+            Sheet sheet = workbook.getSheetAt(0); // Get the first sheet
+
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) continue; // Skip header row
+
+                ProductEntity product = new ProductEntity();
+                BusinessEntity business = new BusinessEntity();
+
+                // Assuming column 0: Business ID, 1: Name, 2: Description, 3: Price, 4: Discount
+                business.setId((int) row.getCell(0).getNumericCellValue());
+                product.setBusiness(business);
+                product.setName(row.getCell(1).getStringCellValue());
+                product.setDescription(row.getCell(2).getStringCellValue());
+                product.setPrice(row.getCell(3).getNumericCellValue());
+                product.setDiscount((float) row.getCell(4).getNumericCellValue());
+                product.setCreatedAt(LocalDateTime.now());
+                product.setUpdatedAt(LocalDateTime.now());
+                product.setStatus(true);
+
+                repo.save(product);
+            }
+
+            workbook.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to import products: " + e.getMessage(), e);
+        }
+    }
+
     private ProductResponse mapToResponseDTO(ProductEntity product) {
         ProductResponse responseDTO = mapper.map(product, ProductResponse.class);
         responseDTO.setBusinessName(product.getBusiness().getName());
