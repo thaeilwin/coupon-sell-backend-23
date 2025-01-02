@@ -105,4 +105,11 @@ public class BusinessController {
         BusinessResponse b = businessService.softDeleteBusiness(id);
         return ResponseEntity.ok("Business deleted successfully");
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getBusinessCount() {
+        long count = businessService.getBusinessCount();
+        return ResponseEntity.ok(count);
+    }
+
 }

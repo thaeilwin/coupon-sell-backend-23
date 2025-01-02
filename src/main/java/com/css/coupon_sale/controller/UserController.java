@@ -109,4 +109,11 @@ public class UserController {
 
         return ResponseEntity.ok (response);
     }
+
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getUserCount() {
+        long count = userRepository.count();
+        return ResponseEntity.ok(count);
+    }
 }

@@ -220,4 +220,10 @@ public class BusinessServiceImpl implements BusinessService {
         return responseDTO;
     }
 
+    @Override
+    public long getBusinessCount() {
+        return businessRepository.count();
+    }
+
+
 }
